@@ -135,7 +135,7 @@
                         <executions>
                             <execution>
                                 <id>generate-compat-test-files</id>
-                                <phase>package</phase>
+                                <phase>none</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -151,7 +151,7 @@
                             </execution>
                             <execution>
                                 <id>archive-compat-test-files</id>
-                                <phase>package</phase>
+                                <phase>none</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>

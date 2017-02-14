@@ -1,0 +1,44 @@
+version: '2.1'
+
+services:
+  janusgraph:
+    image: chrislbs/janusgraph:latest
+    container_name: janusgraph-berkley-es
+    environment:
+      - "JANUS_INDEX_DEFINED_NAME=search"
+      - "JANUS_INDEX_HOSTNAME=elasticsearch"
+      - "JANUS_STORAGE_BACKEND=berkeleyje"
+      - "JANUS_STORAGE_DIRECTORY=../db/berkeley"
+#      - "JANUS_STORAGE_SETUP_WAIT=60000"
+    ports:
+      - "8182:8182"
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+        test: [ "CMD-SHELL", "timeout -t 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8182'" ]
+        interval: 10s
+        timeout: 10s
+        retries: 6
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.2
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.host=0.0.0.0"
+      - "network.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+      - "cluster.name=docker-cluster"
+      - "xpack.security.enabled=false"
+      - "discovery.zen.minimum_master_nodes=1"
+    ports:
+      - "9200"
+    healthcheck:
+        #test: [ "CMD-SHELL", "timeout -t 5 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/9200'" ]
+        test: [ "CMD-SHELL", "timeout -t 5 bash -c 'curl --output /dev/null --silent --head --fail http://127.0.0.1:9200'" ]
+        interval: 10s
+        timeout: 10s
+        retries: 6
+
