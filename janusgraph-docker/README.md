@@ -60,13 +60,13 @@ Setting these environment variables is optional; the default values should work 
 Running Against Dockerized Cassandra
 ------------------------------------
 
-Start a cassandra container in the background. You *must* change the first path after -v `/path/to/local/data/directory:/var/lib/cassandra` 
-to the name of a directory which will be used to store the Cassandra persistent data, 
-for example `/Users/username/janus_graph_data_dir:/var/lib/cassandra`. Docker will ensure this directory is created on the host machine and
-is mounted read-write inside the docker vm.
+Start a cassandra container in the background. You *must* change the first path after -v `/path/to/local/data/directory` 
+to the name of a directory which will be used to store the Cassandra persistent data. For example (on a Mac OS host),
+`/Users/username/janus_graph_data_dir` works. Docker will ensure this directory is created on the host machine and
+is mounted read-write inside the docker container (which is itself a virtual machine running Linux).
 
     docker run -d --name cassandra-node \
-        -v /path/to/local/data/directory:/var/lib/cassandra \
+        -v /Users/username/janus_graph_data_dir:/var/lib/cassandra \
         -e CASSANDRA_START_RPC=true \
         -p 7000:7000 -p 7001:7001 -p 7199:7199 -p 9042:9042 -p 9160:9160 \
         cassandra:3.9
