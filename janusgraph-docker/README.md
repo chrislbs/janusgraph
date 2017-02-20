@@ -48,6 +48,8 @@ When Maven succeeds to build JanusGraph, it should create a docker image with th
 Environment Variables
 ---------------------
 
+Setting these environment variables is optional; the default values should work in most cases.
+
 | VARIABLE                 | DESCRIPTION                                                             |
 |--------------------------|-------------------------------------------------------------------------|
 | `JANUS_CONFIG_FILE`      | The properties configuration file representing the graph                |
@@ -58,7 +60,10 @@ Environment Variables
 Running Against Dockerized Cassandra
 ------------------------------------
 
-Start a cassandra container in the background
+Start a cassandra container in the background. You *must* change the first path after -v `/path/to/local/data/directory:/var/lib/cassandra` 
+to the name of a directory which will be used to store the Cassandra persistent data, 
+for example `/Users/username/janus_graph_data_dir:/var/lib/cassandra`. Docker will ensure this directory is created on the host machine and
+is mounted read-write inside the docker vm.
 
     docker run -d --name cassandra-node \
         -v /path/to/local/data/directory:/var/lib/cassandra \
@@ -74,5 +79,10 @@ Run a linked janus server container in the background
         -p 8182:8182 \
         registry.prod.auction.local:5000/janusgraph-server
 
-(Optional) confirm that both containers are running:
+(Optional) confirm that both containers are running by calling `docker container list`:
+
+    host-123:janusgraph userid$ docker container list
+    CONTAINER ID        IMAGE                                                COMMAND                  CREATED             STATUS              PORTS                                                                                                      NAMES
+    2964ac793db5        registry.prod.auction.local:5000/janusgraph-server   "./docker-entrypoi..."   About an hour ago   Up 17 minutes       0.0.0.0:8182->8182/tcp                                                                                     janus-server
+    20810658870d        cassandra:3.9                                        "/docker-entrypoin..."   About an hour ago   Up 55 minutes       0.0.0.0:7000-7001->7000-7001/tcp, 0.0.0.0:7199->7199/tcp, 0.0.0.0:9042->9042/tcp, 0.0.0.0:9160->9160/tcp   cassandra-node
 
