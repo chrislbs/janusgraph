@@ -31,7 +31,15 @@ serializers:
       config: { ioRegistries: [org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry] }
     }
   - { 
+      className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerGremlinV2d0,
+      config: { ioRegistries: [org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry] }
+    }
+  - { 
       className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV1d0,
+      config: { ioRegistries: [org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry] }
+    }
+  - { 
+      className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0,
       config: { ioRegistries: [org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry] }
     }
 processors:
