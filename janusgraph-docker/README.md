@@ -62,7 +62,7 @@ Running Against Dockerized Cassandra
 
 Start a cassandra container in the background. You *must* change the first path after -v `/path/to/local/data/directory` 
 to the name of a directory which will be used to store the Cassandra persistent data. For example (on a Mac OS host),
-`/Users/username/janus_graph_data_dir` works. Docker will ensure this directory is created on the host machine and
+`/Users/`whoami`/janus_graph_data_dir` works. Docker will ensure this directory is created on the host machine and
 is mounted read-write inside the docker container (which is itself a virtual machine running Linux).
 
     docker run -d --name cassandra-node \
@@ -71,6 +71,8 @@ is mounted read-write inside the docker container (which is itself a virtual mac
         -p 7000:7000 -p 7001:7001 -p 7199:7199 -p 9042:9042 -p 9160:9160 \
         cassandra:3.9
         
+*WARNING* do not run these back to back ... Cassandra needs a minute or two to start. If not, Janus Server will come up in a non-working state.
+
 Run a linked janus server container in the background
 
     docker run -d \
@@ -86,3 +88,11 @@ Run a linked janus server container in the background
     2964ac793db5        registry.prod.auction.local:5000/janusgraph-server   "./docker-entrypoi..."   About an hour ago   Up 17 minutes       0.0.0.0:8182->8182/tcp                                                                                     janus-server
     20810658870d        cassandra:3.9                                        "/docker-entrypoin..."   About an hour ago   Up 55 minutes       0.0.0.0:7000-7001->7000-7001/tcp, 0.0.0.0:7199->7199/tcp, 0.0.0.0:9042->9042/tcp, 0.0.0.0:9160->9160/tcp   cassandra-node
 
+(Optional) Hard restart of janus graph server and cassandra node
+
+    docker stop janus-server
+    docker stop cassandra-node
+    docker rm janus-server
+    docker rm cassandra-node
+    rm -rf ~/janus_graph_data_dir
+    # execute the docker run commands to start cassandra-node and janus-server ...
