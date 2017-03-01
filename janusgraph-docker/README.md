@@ -79,6 +79,7 @@ Run a linked janus server container in the background
         --name janus-server \
         --link cassandra-node \
         -p 8182:8182 \
+        -v /Users/`whoami`:/home/`whoami` \
         registry.prod.auction.local:5000/janusgraph-server
 
 (Optional) confirm that both containers are running by calling `docker container list`:
