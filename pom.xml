@@ -117,7 +117,6 @@
         <test.excluded.groups>org.janusgraph.testcategory.MemoryTests,org.janusgraph.testcategory.PerformanceTests,org.janusgraph.testcategory.BrittleTests</test.excluded.groups>
     </properties>
     <modules>
-        <module>janusgraph-docker</module>
         <module>janusgraph-core</module>
         <module>janusgraph-test</module>
         <module>janusgraph-berkeleyje</module>
